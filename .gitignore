@@ -82,6 +82,7 @@ celerybeat-schedule
 venv/
 ENV/
 flask/
+.idea
 
 # Spyder project settings
 .spyderproject
