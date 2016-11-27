@@ -1,4 +1,4 @@
-standard_gc = {
+{
     "phe": {
         "name": "Phenylalanine",
         "codons": ["TTT", "TTC"],
