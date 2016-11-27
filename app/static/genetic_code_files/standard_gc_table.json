@@ -1,0 +1,163 @@
+standard_gc = {
+    "phe": {
+        "name": "Phenylalanine",
+        "codons": ["TTT", "TTC"],
+        "count": 2,
+        "symbol": "F"
+    },
+    "leu": {
+        "name": "Leucine",
+        "codons": ["TTA", "TTG", "CTT", "CTC", "CTA", "CTG"],
+        "count": 6,
+        "symbol": "L"
+    },
+    "ile": {
+        "name": "Isoleucine",
+        "codons": ["ATT", "ATC", "ATA"],
+        "count": 3,
+        "symbol": "I"
+    },
+    "met": {
+        "name": "Methionine",
+        "codons": ["ATG"],
+        "count": 1,
+        "symbol": "M"
+    },
+    "val": {
+        "name": "Valine",
+        "codons": ["GTT", "GTC", "GTA", "GTG"],
+        "count": 4,
+        "symbol": "V"
+    },
+    "ser": {
+        "name": "Serine",
+        "codons": ["TCT", "TCC", "TCA", "TCG", "AGT", "AGC"],
+        "count": 6,
+        "symbol": "S"
+    },
+    "pro": {
+        "name": "Proline",
+        "codons": ["CCT", "CCC", "CCA", "CCG"],
+        "count": 4,
+        "symbol": "P"
+    },
+    "thr": {
+        "name": "Threonine",
+        "codons": ["ACT", "ACC", "ACA", "ACG"],
+        "count": 4,
+        "symbol": "S"
+    },
+    "ala": {
+        "name": "Alanine",
+        "codons": ["GCT", "GCC", "GCA", "GCG"],
+        "count": 4,
+        "symbol": "A"
+    },
+    "asp": {
+        "name": "Aspratic acid",
+        "codons": ["GAT", "GAC"],
+        "count":2,
+        "symbol": "D"
+    },
+    "glu": {
+        "name": "Glutamic acid",
+        "codons": ["GAA", "GAG"],
+        "count": 2,
+        "symbol": "E"
+    },
+    "lys": {
+        "name": "Lysine",
+        "codons": ["AAA", "AAG"],
+        "count": 2,
+        "symbol": "K"
+    },
+    "asn": {
+        "name": "Asparagine",
+        "codons": ["AAT", "AAC"],
+        "count": 2,
+        "symbol": "N"
+    },
+    "gln": {
+        "name": "Glutamine",
+        "codons": ["CAA", "CAG"],
+        "count": 2,
+        "symbol": "Q"
+    },
+    "his": {
+        "name": "Histidine",
+        "codons": ["CAT", "CAC"],
+        "count":2,
+        "symbol": "H"
+    },
+    "stop": {
+        "name": "Stop",
+        "codons": ["TAA", "TAG", "TGA"],
+        "count":3,
+        "symbol": "S"
+    },
+    "tyr": {
+        "name": "Tyrosine",
+        "codons": ["TAT", "TAC"],
+        "count":2,
+        "symbol": "Y"
+    },
+    "cys": {
+        "name": "Cysteine",
+        "codons": ["TGT", "TGC"],
+        "count":2,
+        "symbol": "C"
+    },
+    "trp": {
+        "name": "Tryptophan",
+        "codons": ["TGG"],
+        "count":1,
+        "symbol": "W"
+    },
+    "arg": {
+        "name": "Arginine",
+        "codons": ["CGT", "CGC", "CGA", "CGG", "AGA", "AGG"],
+        "count": 6,
+        "symbol": "R"
+    },
+    "gly": {
+        "name": "Glycine",
+        "codons": ["GGT", "GGC", "GGA", "GGG"],
+        "count":4,
+        "symbol": "G"
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
