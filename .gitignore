@@ -84,6 +84,9 @@ ENV/
 flask/
 .idea
 
+#logs
+logs
+
 # Spyder project settings
 .spyderproject
 
