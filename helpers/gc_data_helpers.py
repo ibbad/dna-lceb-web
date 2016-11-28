@@ -20,7 +20,6 @@ def get_gc_table(filename=None, path=None):
     path are given, path is preferred for looking up file.
     :return:
     """
-    gc_table_data = None
     if path is not None:
         try:
             with open(path) as gc_file:
@@ -38,7 +37,7 @@ def get_gc_table(filename=None, path=None):
         except:
             return None
     else:
-        # Invalid data provided. both paramters are none
+        # Invalid data provided. both parameters are none
         return None
 
 
@@ -53,7 +52,6 @@ def codon_to_aa_gct(gct=None, codon=None):
     try:
         if gct is None or codon is None:
             # invalid set of inputs provided
-            print("one is none")
             return None
 
         for key in gct.keys():
@@ -125,7 +123,6 @@ def get_aa_using_name_gct(gct=None, aa=None):
 
         # If nothing is found, return None
         return None
-
     except Exception:
         return None
 
@@ -144,12 +141,13 @@ def get_aa_using_codon_gct(gct=None, codon=None):
             return None
         for key in gct.keys():
             aa_data = gct.get(key)
-            if codon in aa_data["codons"]:
+            if codon.upper() in aa_data["codons"]:
                 # found the codon, return AA key.
                 return aa_data
         # Could not find this codon in any AA's data.
         return None
-    except Exception:
+    except Exception as e:
+        print(e)
         return None
 
 
@@ -167,7 +165,7 @@ def get_synonymous_codons_gct(gct=None, codon=None):
             return None
         for key in gct.keys():
             aa_data = gct.get(key)
-            if codon in aa_data["codons"]:
+            if codon.upper() in aa_data["codons"]:
                 # found the codon, return AA key.
                 return aa_data["codons"]
         # Could not find this codon in any AA's data.

@@ -3,126 +3,147 @@
         "name": "Phenylalanine",
         "codons": ["TTT", "TTC"],
         "count": 2,
+        "key": "phe",
         "symbol": "F"
     },
     "leu": {
         "name": "Leucine",
         "codons": ["TTA", "TTG", "CTT", "CTC", "CTA", "CTG"],
         "count": 6,
+        "key": "leu",
         "symbol": "L"
     },
     "ile": {
         "name": "Isoleucine",
         "codons": ["ATT", "ATC", "ATA"],
         "count": 3,
+        "key": "ile",
         "symbol": "I"
     },
     "met": {
         "name": "Methionine",
         "codons": ["ATG"],
         "count": 1,
+        "key": "met",
         "symbol": "M"
     },
     "val": {
         "name": "Valine",
         "codons": ["GTT", "GTC", "GTA", "GTG"],
         "count": 4,
+        "key": "val",
         "symbol": "V"
     },
     "ser": {
         "name": "Serine",
         "codons": ["TCT", "TCC", "TCA", "TCG", "AGT", "AGC"],
         "count": 6,
+        "key": "ser",
         "symbol": "S"
     },
     "pro": {
         "name": "Proline",
         "codons": ["CCT", "CCC", "CCA", "CCG"],
         "count": 4,
+        "key": "pro",
         "symbol": "P"
     },
     "thr": {
         "name": "Threonine",
         "codons": ["ACT", "ACC", "ACA", "ACG"],
         "count": 4,
+        "key": "thr",
         "symbol": "S"
     },
     "ala": {
         "name": "Alanine",
         "codons": ["GCT", "GCC", "GCA", "GCG"],
         "count": 4,
+        "key": "ala",
         "symbol": "A"
     },
     "asp": {
         "name": "Aspratic acid",
         "codons": ["GAT", "GAC"],
         "count":2,
+        "key": "asp",
         "symbol": "D"
     },
     "glu": {
         "name": "Glutamic acid",
         "codons": ["GAA", "GAG"],
         "count": 2,
+        "key": "glu",
         "symbol": "E"
     },
     "lys": {
         "name": "Lysine",
         "codons": ["AAA", "AAG"],
         "count": 2,
+        "key": "lys",
         "symbol": "K"
     },
     "asn": {
         "name": "Asparagine",
         "codons": ["AAT", "AAC"],
         "count": 2,
+        "key": "asn",
         "symbol": "N"
     },
     "gln": {
         "name": "Glutamine",
         "codons": ["CAA", "CAG"],
         "count": 2,
+        "key": "gln",
         "symbol": "Q"
     },
     "his": {
         "name": "Histidine",
         "codons": ["CAT", "CAC"],
         "count":2,
+        "key": "his",
         "symbol": "H"
     },
     "stop": {
         "name": "Stop",
         "codons": ["TAA", "TAG", "TGA"],
         "count":3,
+        "key": "stop",
         "symbol": "S"
     },
     "tyr": {
         "name": "Tyrosine",
         "codons": ["TAT", "TAC"],
         "count":2,
+        "key": "tyr",
         "symbol": "Y"
     },
     "cys": {
         "name": "Cysteine",
         "codons": ["TGT", "TGC"],
         "count":2,
+        "key": "cys",
         "symbol": "C"
     },
     "trp": {
         "name": "Tryptophan",
         "codons": ["TGG"],
         "count":1,
+        "key": "trp",
         "symbol": "W"
     },
     "arg": {
         "name": "Arginine",
         "codons": ["CGT", "CGC", "CGA", "CGG", "AGA", "AGG"],
         "count": 6,
+        "key": "arg",
         "symbol": "R"
     },
     "gly": {
         "name": "Glycine",
         "codons": ["GGT", "GGC", "GGA", "GGG"],
         "count":4,
+        "key": "gly",
         "symbol": "G"
     }
 }

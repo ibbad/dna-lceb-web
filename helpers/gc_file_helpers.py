@@ -28,7 +28,7 @@ def codon_to_aa(codon, gc=1):
 
         for key in gc_data.keys():
             aa_data = gc_data.get(key)
-            if codon in aa_data["codons"]:
+            if codon.upper() in aa_data["codons"]:
                 # found the codon, return AA key.
                 return key
         # Could not find this codon in any AA's data.
@@ -124,7 +124,7 @@ def get_aa_using_codon(codon, gc=1):
 
         for key in gc_data.keys():
             aa_data = gc_data.get(key)
-            if codon in aa_data["codons"]:
+            if codon.upper() in aa_data["codons"]:
                 # found the codon, return AA key.
                 return aa_data
         # Could not find this codon in any AA's data.
@@ -151,7 +151,7 @@ def get_synonymous_codons(codon, gc=1):
 
         for key in gc_data.keys():
             aa_data = gc_data.get(key)
-            if codon in aa_data["codons"]:
+            if codon.upper() in aa_data["codons"]:
                 # found the codon, return AA key.
                 return aa_data["codons"]
         # Could not find this codon in any AA's data.

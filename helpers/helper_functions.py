@@ -5,7 +5,8 @@ import json
 import string
 import random
 import scipy.io
-from .gc_data_helpers import get_gc_table, codon_to_aa_gct
+from .gc_data_helpers import get_gc_table, codon_to_aa_gct, \
+    get_aa_using_codon_gct
 from .gc_file_helpers import gc_file_associations
 
 
@@ -147,6 +148,45 @@ def find_coding_region(dna_seq=None, gc=1):
         return dict(start=start_index, stop=stop_index)
     except KeyError:
         # given GC value does not have any associated file.
+        pass
+
+
+def find_capacity(dna_seq=None, gc=1):
+    """
+    This function returns the capacity for given sequence.
+    :param dna_seq: dna sequence string.
+    :param gc: genetic code (integer). default=None
+    :return capacity: number of bits we can store in given dna sequence.
+    codons.
+    """
+    if dna_seq is None or type(dna_seq) is not str:
+        # Bad dna_seq value
+        return None
+    # Read the genetic code table data.
+    try:
+        # If given gc is not found, use
+        gct = get_gc_table(gc_file_associations.get(str(gc)))
+        dna = dna_seq[:len(dna_seq) - (len(dna_seq) % 3)]
+        dna = _clean_dna(dna)
+        capacity = 0
+        # Flag for start
+        start = False
+        for i in range(0, len(dna), 3):
+            codon = dna[i:i+3]
+            # check for codon amino acid and if its MET then mark as start.
+            aa = get_aa_using_codon_gct(gct=gct, codon=codon)
+            if aa["key"] == 'met' and not start:
+                start = True
+            elif aa["key"] == 'stop' and start:
+                start = False
+            if start:
+                capacity += 2 if aa["count"] > 3 else 1
+        return capacity
+    except KeyError:
+        # given GC value does not have any associated file.
+        pass
+    except ValueError:
+        # count has invalid string value
         pass
 
 
