@@ -6,7 +6,7 @@ information from json file.
 import json
 
 # Read the list of genetic codes and associated files in a dictionary.
-with open("gc_files/gc_file_directory") as gc_directory:
+with open("gc_files/gc_file_associations.json") as gc_directory:
     gc_file_associations = json.load(gc_directory)
 
 
@@ -19,14 +19,14 @@ def codon_to_aa(codon, gc=1):
     :return:
     """
     try:
-        if str(gc) not in gc_file_associations.keys:
+        if str(gc) not in gc_file_associations.keys():
             # No entry for the required genetic code
             return None
         # Read the file
         with open(gc_file_associations.get(str(gc))) as gc_file:
             gc_data = json.load(gc_file)
 
-        for key in gc_data.keys:
+        for key in gc_data.keys():
             aa_data = gc_data.get(key)
             if codon in aa_data["codons"]:
                 # found the codon, return AA key.
@@ -47,7 +47,7 @@ def aa_to_codon(aa, gc=1):
     :return:
     """
     try:
-        if str(gc) not in gc_file_associations.keys:
+        if str(gc) not in gc_file_associations.keys():
             # No entry for the required genetic code
             return None
         # Read the file for genetic code table information
@@ -56,10 +56,10 @@ def aa_to_codon(aa, gc=1):
 
         # if notation is given
         if len(aa) == 3:
-            if aa.lower() in gc_data.keys:
+            if aa.lower() in gc_data.keys():
                 return gc_data.get(aa.lower())["codons"]
         # lookup for fullname or notation
-        for key in gc_data.keys:
+        for key in gc_data.keys():
             aa_data = gc_data.get(key)
             if aa_data["name"].lower() == aa.lower() or \
                 aa_data["symbol"].lower() == aa.lower():
@@ -81,7 +81,7 @@ def get_aa_using_name(aa, gc=1):
     :return:
     """
     try:
-        if str(gc) not in gc_file_associations.keys:
+        if str(gc) not in gc_file_associations.keys():
             # No entry for the required genetic code
             return None
         # Read the file for genetic code table information
@@ -90,10 +90,10 @@ def get_aa_using_name(aa, gc=1):
 
         # if notation is given
         if len(aa) == 3:
-            if aa.lower() in gc_data.keys:
+            if aa.lower() in gc_data.keys():
                 return gc_data.get(aa.lower())
         # lookup for fullname or notation
-        for key in gc_data.keys:
+        for key in gc_data.keys():
             aa_data = gc_data.get(key)
             if aa_data["name"].lower() == aa.lower() or \
                 aa_data["symbol"].lower() == aa.lower():
@@ -115,14 +115,14 @@ def get_aa_using_codon(codon, gc=1):
     :return:
     """
     try:
-        if str(gc) not in gc_file_associations.keys:
+        if str(gc) not in gc_file_associations.keys():
             # No entry for the required genetic code
             return None
         # Read the file
         with open(gc_file_associations.get(str(gc))) as gc_file:
             gc_data = json.load(gc_file)
 
-        for key in gc_data.keys:
+        for key in gc_data.keys():
             aa_data = gc_data.get(key)
             if codon in aa_data["codons"]:
                 # found the codon, return AA key.
@@ -142,14 +142,14 @@ def get_synonymous_codons(codon, gc=1):
     :return:
     """
     try:
-        if str(gc) not in gc_file_associations.keys:
+        if str(gc) not in gc_file_associations.keys():
             # No entry for the required genetic code
             return None
         # Read the file
         with open(gc_file_associations.get(str(gc))) as gc_file:
             gc_data = json.load(gc_file)
 
-        for key in gc_data.keys:
+        for key in gc_data.keys():
             aa_data = gc_data.get(key)
             if codon in aa_data["codons"]:
                 # found the codon, return AA key.
@@ -158,35 +158,3 @@ def get_synonymous_codons(codon, gc=1):
         return None
     except Exception:
         return None
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

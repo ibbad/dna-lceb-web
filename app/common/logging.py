@@ -27,7 +27,7 @@ def setup_logging(name, filename, maxFilesize, backup_count):
 
     log_fh = RotatingFileHandler(filename,
                                  maxBytes=maxFilesize,
-                                 backupCount=backup_logfile)
+                                 backupCount=backup_count)
     log_fh.setLevel(logging.INFO)
     log_fh.setFormatter(log_format)
 
