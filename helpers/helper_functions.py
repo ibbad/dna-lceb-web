@@ -108,24 +108,30 @@ def dna_from_json(filename=None, path=None):
         return None
 
 
-def find_coding_region(dna_seq=None, gc=1):
+def find_coding_region(dna_seq=None, frame=1, gc=1):
     """
     This function returns a dictionary with two lists containing start and
     stop indexes for coding frames in the given dna sequence.
     :param dna_seq: dna sequence string.
+    :param frame: open reading frame number i.e. 1, 2, 3 default=1
     :param gc: genetic code (integer). default=None
     :return: dictionary object containing list of indexes for start and stop
     codons.
     """
+    # TODO: Take open reading frames into account.
     if dna_seq is None or type(dna_seq) is not str:
         # Bad dna_seq value
+        return None
+    if frame > 3 or frame < 1:
+        # Invalid frame number
         return None
     # Read the genetic code table data.
     try:
         # If given gc is not found, use
         gct = get_gc_table(gc_file_associations.get(str(gc)))
-        dna = dna_seq[:len(dna_seq) - (len(dna_seq) % 3)]
-        dna = _clean_dna(dna)
+        dna_seq = _clean_dna(dna_seq)
+        dna = dna_seq[
+              (frame - 1): (len(dna_seq) - (len(dna_seq) % 3) + (frame - 1))]
 
         # Find the start/stop codon indexes.
         start_index = []
@@ -151,10 +157,11 @@ def find_coding_region(dna_seq=None, gc=1):
         pass
 
 
-def find_capacity(dna_seq=None, gc=1):
+def find_capacity(dna_seq=None, frame=1, gc=1):
     """
     This function returns the capacity for given sequence.
     :param dna_seq: dna sequence string.
+    :param frame: open reading frame number e.g. 1, 2, 3, default=1
     :param gc: genetic code (integer). default=None
     :return capacity: number of bits we can store in given dna sequence.
     codons.
@@ -162,12 +169,16 @@ def find_capacity(dna_seq=None, gc=1):
     if dna_seq is None or type(dna_seq) is not str:
         # Bad dna_seq value
         return None
+    if frame > 3 or frame < 1:
+        # Bad value for frame
+        return None
     # Read the genetic code table data.
     try:
         # If given gc is not found, use
         gct = get_gc_table(gc_file_associations.get(str(gc)))
-        dna = dna_seq[:len(dna_seq) - (len(dna_seq) % 3)]
-        dna = _clean_dna(dna)
+        dna_seq = _clean_dna(dna_seq)
+        dna = dna_seq[
+              (frame - 1):(len(dna_seq) - (len(dna_seq) % 3) + (frame - 1))]
         capacity = 0
         # Flag for start
         start = False
@@ -178,9 +189,64 @@ def find_capacity(dna_seq=None, gc=1):
             if aa["key"] == 'met' and not start:
                 start = True
             elif aa["key"] == 'stop' and start:
+                if aa["count"] > 3:
+                    capacity += 2
+                elif aa["count"] > 1:
+                    capacity += 1
                 start = False
+            # include stop codon in watermarking region
             if start:
-                capacity += 2 if aa["count"] > 3 else 1
+                if aa["count"] > 3:
+                    capacity += 2
+                elif aa["count"] > 1:
+                    capacity += 1
+        return capacity
+    except KeyError:
+        # given GC value does not have any associated file.
+        pass
+    except ValueError:
+        # count has invalid string value
+        pass
+
+
+def find_capacity_for_coding_region(dna_seq=None, region={}, frame=1, gc=1):
+    """
+    This function returns the capacity for given sequence.
+    :param dna_seq: dna sequence string.
+    :param region: dictionary object containing indexes of start and stop codon.
+    :param frame: open reading frame number e.g. 1, 2, 3, default=1
+    :param gc: genetic code (integer). default=None
+    :return capacity: number of bits we can store in given dna sequence.
+    codons.
+    """
+    if dna_seq is None or type(dna_seq) is not str:
+        # Bad dna_seq value
+        return None
+    if frame > 3 or frame < 1:
+        # Bad value for frame
+        return None
+    # Read the genetic code table data.
+    try:
+        # If given gc is not found, use
+        gct = get_gc_table(gc_file_associations.get(str(gc)))
+        dna_seq = _clean_dna(dna_seq)
+        dna = dna_seq[
+              (frame - 1):(len(dna_seq) - (len(dna_seq) % 3) + (frame - 1))]
+        capacity = 0
+        # TODO: Break down the dna sequencing over a pool of processes.
+        for i in range(len(region["start"])):
+            if i < len(region["stop"]):
+                dna_portion = dna[region["start"][i]: region["stop"][i]]
+            else:
+                dna_portion = dna[region["start"][i]: len(dna)]
+
+            # calculate capacity
+            for j in range(0, len(dna_portion), 3):
+                aa = get_aa_using_codon_gct(gct=gct, codon=dna[j: j+3])
+                if aa["count"] > 3:
+                    capacity += 2
+                elif aa["count"] > 1:
+                    capacity += 1
         return capacity
     except KeyError:
         # given GC value does not have any associated file.
