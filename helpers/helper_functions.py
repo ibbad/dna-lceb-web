@@ -362,6 +362,9 @@ def _lsb_4fold(aa, bits):
         return codon[:2]+'g'
     elif bits == '11':
         return codon[:2]+'t'
+    else:
+        print(aa, bits)
+        return None
 
 
 def _lsb_2fold(aa, bit):
@@ -406,6 +409,9 @@ def _extract_lsb_4fold(codon):
         return '10'
     elif codon[-1] == 't':
         return '11'
+    else:
+        print(codon)
+        return None
 
 
 def _find_popular_codon(aa):
@@ -437,10 +443,11 @@ def _int_to_bin_str(value):
     :param value: integer value to be converted to binary string.
     :return: None if 0 > value > 2^16-1
     """
-    if 0 < value < (2**16) :
+    if 0 < value < (2**16):
         bits = bin(value)[2:]
         return ('0'*16)[len(bits):] + bits
     else:
+        print("None in int2binstr")
         None
 
 
@@ -477,10 +484,11 @@ def embed_data(dna_seq=None, message=None, frame=1, region={}, gc=1):
     # embed data
     try:
         # Convert data to binary string
-        wm_length = len(message)
-
+        wm_len = _int_to_bin_str(len(message))
         wmc = 0                             # watermark counter
         wm_data = str_to_bin(message)
+        wm_data = wm_len + wm_data  # append length to wm data.
+        wm_data += '0'              # pad extra bits if given number of bits is
         gct = get_gc_table(gc_file_associations.get(str(gc)))
         dna = dna_seq[
               (frame-1): (len(dna_seq) - (len(dna_seq) % 3) + (frame - 1))]
@@ -496,13 +504,20 @@ def embed_data(dna_seq=None, message=None, frame=1, region={}, gc=1):
             if rc < len(region.get("start")) and i >= region.get("start")[rc]:
                 # Loop through coding region.
                 j = i
-                while j < region.get("stop")[rc]:
+                while j < region.get("stop")[rc] - 3:
                     # embed data
                     aa = get_aa_using_codon_gct(gct=gct, codon=dna[j: j+3])
                     if aa["count"] > 3 and wmc < len(wm_data):
                         # embedding in 4+ fold codons
-                        wm_dna += _lsb_4fold(aa=aa, bits=wm_data[wmc:wmc+2])
-                        wmc += 2
+                        if wmc == len(wm_data) - 1:
+                            # fail safe condition if we have one bit left to
+                            # embed and available codon is 4+ fold.
+                            wm_dna += _lsb_4fold(aa=aa,
+                                                 bits=wm_data[wmc]+'0')
+                            wmc += 1
+                        else:
+                            wm_dna += _lsb_4fold(aa=aa, bits=wm_data[wmc:wmc+2])
+                            wmc += 2
                     elif aa["count"] > 1 and wmc < len(wm_data):
                         # embedding in 2/3 fold codons
                         wm_dna += _lsb_2fold(aa=aa, bit=wm_data[wmc])
@@ -520,7 +535,7 @@ def embed_data(dna_seq=None, message=None, frame=1, region={}, gc=1):
         if len(wm_dna) < len(dna_seq):
             wm_dna += dna_seq[len(wm_dna):]
         return wm_dna.lower()
-    except Exception as e:
+    except ValueError as e:
         print(e)
         return None
 
@@ -560,21 +575,15 @@ def extract_data(wm_dna=None, frame=1, region={}, gc=1):
             if rc < len(region.get("start")) and i >= region.get("start")[rc]:
                 # Loop through coding region.
                 j = i
-                while j < region.get("stop")[rc]:
+                while j < region.get("stop")[rc] - 3:
                     # extract data
                     aa = get_aa_using_codon_gct(gct=gct, codon=dna[j: j+3])
                     if aa["count"] > 3:
                         # extract from 4+ fold codons
                         wm_msg += _extract_lsb_4fold(codon=dna[j: j+3])
-                        print("in 4 fold extraction")
-                        print("codon:", dna[j:j+3])
-                        print("wm_msg", wm_msg)
                     elif aa["count"] > 1:
                         # extract from 2/3 fold codons
                         wm_msg += _extract_2fold(codon=dna[j:j+3], aa=aa)
-                        print("in 2 fold extraction")
-                        print("codon:", dna[j:j + 3])
-                        print("wm_msg", wm_msg)
                     else:
                         pass     # skip
                     j += 3
@@ -582,8 +591,10 @@ def extract_data(wm_dna=None, frame=1, region={}, gc=1):
                 i = j            # increment counters accordingly
             else:
                 i += 3           # skip non coding region
-        print(wm_msg)
-        return bin_to_str(wm_msg)
+        # get length from data from first 16 bits
+        wm_len = _bin_str_to_int(wm_msg[0:16])
+        # convert and return the watermark data
+        return bin_to_str(wm_msg[16:(16+wm_len*8)])
     except Exception as e:
         print(e)
         return None
