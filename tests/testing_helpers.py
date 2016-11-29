@@ -1,3 +1,7 @@
+"""
+Testing script or data.
+"""
+
 from helpers.helper_functions import find_capacity_for_coding_region, find_coding_region, embed_data, extract_data, dna_from_mat
 # set sequence
 seq = "aaaatgttattttaacatcacatgtatgcttagaat"
