@@ -488,7 +488,6 @@ def embed_data(dna_seq=None, message=None, frame=1, region={}, gc=1):
         wmc = 0                             # watermark counter
         wm_data = str_to_bin(message)
         wm_data = wm_len + wm_data  # append length to wm data.
-        wm_data += '0'              # pad extra bits if given number of bits is
         gct = get_gc_table(gc_file_associations.get(str(gc)))
         dna = dna_seq[
               (frame-1): (len(dna_seq) - (len(dna_seq) % 3) + (frame - 1))]
