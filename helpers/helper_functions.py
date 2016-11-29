@@ -372,10 +372,8 @@ def _lsb_2fold(aa, bit):
     :return: watermarked codon (string) e.g. AGA.
     """
     if bit == '0':
-        print ("2fold sub:", aa["codons"][0], " bit:", bit)
         return aa["codons"][0]
     else:
-        print("2fold sub:", aa["codons"][1], " bit:", bit)
         return aa["codons"][1]
 
 
@@ -386,7 +384,7 @@ def _extract_2fold(codon, aa):
     :param aa: amino acid information.
     :return: extracted bit 0 or 1.
     """
-    if codon == aa["codons"][0]:
+    if codon == aa["codons"][0].lower():
         return '0'
     else:
         return '1'
@@ -446,7 +444,6 @@ def embed_data(dna_seq=None, message=None, frame=1, region={}, gc=1):
     :return: DNA sequence (string) watermarked.
     """
     if dna_seq is None or type(dna_seq) is not str:
-        print("here")
         return None
     # Clean dna sequence.
     dna_seq = _clean_dna(dna_seq)
@@ -499,6 +496,69 @@ def embed_data(dna_seq=None, message=None, frame=1, region={}, gc=1):
         print(e)
         return None
 
+
+def extract_data(wm_dna=None, frame=1, region={}, gc=1):
+    """
+    This function embeds the given message in given DNA sequence.
+    :param wm_dna: watermarked DNA sequence (string) to be watermarked.
+    :param frame: open reading frame number in which data will be
+    watermarked.
+    :param region: dictionary containing position of start, stop codons
+    for coding regions.
+    :param gc: genetic code.
+    :return: DNA sequence (string) watermarked.
+    """
+    if wm_dna is None or type(wm_dna) is not str:
+        return None
+    # Clean dna sequence.
+    dna_seq = _clean_dna(wm_dna)
+    wm_dna = ""                             # watermarked DNA
+    # extract data
+    try:
+        # Convert data to binary string
+        wm_msg = ""
+        gct = get_gc_table(gc_file_associations.get(str(gc)))
+        dna = dna_seq[
+              (frame-1): (len(dna_seq) - (len(dna_seq) % 3) + (frame - 1))]
+
+        # Finish last coding region at the end of DNA.
+        if len(region.get("start")) < len(region.get("stop")):
+            region.get("stop").append(len(dna))
+        rc = 0
+        i = 0
+        while i < len(dna):
+            # Loop through whole DNA sequence with step size = 3 (i.e. length
+            #  of codon)
+            if rc < len(region.get("start")) and i >= region.get("start")[rc]:
+                # Loop through coding region.
+                j = i
+                while j < region.get("stop")[rc]:
+                    # extract data
+                    aa = get_aa_using_codon_gct(gct=gct, codon=dna[j: j+3])
+                    if aa["count"] > 3:
+                        # extract from 4+ fold codons
+                        wm_msg += _extract_lsb_4fold(codon=dna[j: j+3])
+                        print("in 4 fold extraction")
+                        print("codon:", dna[j:j+3])
+                        print("wm_msg", wm_msg)
+                    elif aa["count"] > 1:
+                        # extract from 2/3 fold codons
+                        wm_msg += _extract_2fold(codon=dna[j:j+3], aa=aa)
+                        print("in 2 fold extraction")
+                        print("codon:", dna[j:j + 3])
+                        print("wm_msg", wm_msg)
+                    else:
+                        pass     # skip
+                    j += 3
+                rc += 1          # update rc for next coding region.
+                i = j            # increment counters accordingly
+            else:
+                i += 3           # skip non coding region
+        print(wm_msg)
+        return bin_to_str(wm_msg)
+    except Exception as e:
+        print(e)
+        return None
 
 
 
