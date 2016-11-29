@@ -26,3 +26,14 @@ class ExtractForm(Form):
                                                         number_range(1, 42)])
 
     submit = SubmitField('Extract')
+
+
+class CapacityCalculateForm(Form):
+    """
+    Form for calculating capacity for given DNA sequence
+    """
+    dna_field = StringField('DNA Sequence', validators=[input_required()])
+    gc_field = IntegerField('Genetic code', validators=[input_required(),
+                                                        number_range(1, 42)])
+
+    submit = SubmitField('Calculate')
