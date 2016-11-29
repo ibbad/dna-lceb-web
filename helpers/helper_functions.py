@@ -431,6 +431,32 @@ def _find_popular_codon(aa):
     return aa["codons"][highest]
 
 
+def _int_to_bin_str(value):
+    """
+    This function returns the integer value in binary string of length 16.
+    :param value: integer value to be converted to binary string.
+    :return: None if 0 > value > 2^16-1
+    """
+    if 0 < value < (2**16) :
+        bits = bin(value)[2:]
+        return ('0'*16)[len(bits):] + bits
+    else:
+        None
+
+
+def _bin_str_to_int(bin_str):
+    """
+    This function returns integere value extracted from binary string of
+    length 16.
+    :param bin_str:
+    :return:
+    """
+    if len(bin_str) <= 16:
+        return int(bin_str, 2)
+    else:
+        None
+
+
 def embed_data(dna_seq=None, message=None, frame=1, region={}, gc=1):
     """
     This function embeds the given message in given DNA sequence.
@@ -451,6 +477,8 @@ def embed_data(dna_seq=None, message=None, frame=1, region={}, gc=1):
     # embed data
     try:
         # Convert data to binary string
+        wm_length = len(message)
+
         wmc = 0                             # watermark counter
         wm_data = str_to_bin(message)
         gct = get_gc_table(gc_file_associations.get(str(gc)))
