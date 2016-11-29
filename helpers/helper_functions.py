@@ -313,6 +313,41 @@ def bits2str(bits):
     return ''.join(chars)
 
 
+def bin_to_nucleotide(bin_str):
+    """
+    Convert binary bits to nucleotide
+    :param bin_str: pair of binary bits.
+    :return: nulceotide A, G, C, T
+    """
+    if bin_str == '00':
+        return 'A'
+    elif bin_str == '01':
+        return 'C'
+    elif bin_str == '10':
+        return 'G'
+    elif bin_str == '11':
+        return 'T'
+    else:
+        return None
+
+
+def nucleotide_to_bin(ch):
+    """
+    Convert nucleotide to binary string
+    :param ch: A, G, C, T
+    :return: binary_string: 00, 01, 10, 11
+    """
+    if ch == 'A':
+        return '00'
+    elif ch == 'C':
+        return '10'
+    elif ch == 'G':
+        return '10'
+    elif ch == 'T':
+        return '11'
+    else:
+        return None
+
 
 
 
