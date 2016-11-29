@@ -285,10 +285,10 @@ def bits_to_str(bits):
     :param bits: character array (string) containing bits.
     :return: string
     """
-    ch_str = ""
+    ch_str = []
     for b in range(0, len(bits), 8):
-        ch_str.append(str(bits[b:b+8]))
-    return ch_str
+        ch_str.append(chr(int(bits[b:b+8], 2)))
+    return ''.join([c for c in ch_str])
 
 
 def str2bits(str_in):
