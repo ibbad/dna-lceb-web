@@ -266,11 +266,51 @@ def _clean_dna(dna_seq):
     return ''.join(c for c in dna_seq.lower() if c in 'agct')
 
 
+def str_to_bits(str_input):
+    """
+    Convert string to bits
+    :param str_input: string input
+    :return: string containing bits.
+    """
+    bit_str = ""
+    for ch in str_input:
+        bits = bin(ord(ch))[2:]
+        bit_str += '00000000'[len(bits):] + bits
+    return bit_str
 
 
+def bits_to_str(bits):
+    """
+    Convert bits(string) to string
+    :param bits: character array (string) containing bits.
+    :return: string
+    """
+    ch_str = ""
+    for b in range(0, len(bits), 8):
+        ch_str.append(str(bits[b:b+8]))
+    return ch_str
 
 
+def str2bits(str_in):
+    """
+    Convert string input to bits.
+    :param str_in: input string
+    :return: bits returned
+    """
+    result = []
+    for c in str_in:
+        bits = bin(ord(c))[2:]
+        bits = '00000000'[len(bits):] + bits
+        result.extend([int(b) for b in bits])
+    return result
 
+
+def bits2str(bits):
+    chars = []
+    for b in range(int(len(bits) / 8)):
+        byte = bits[b * 8:(b + 1) * 8]
+        chars.append(chr(int(''.join([str(bit) for bit in byte]), 2)))
+    return ''.join(chars)
 
 
 
