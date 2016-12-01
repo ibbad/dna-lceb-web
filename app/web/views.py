@@ -1,6 +1,7 @@
 """
 This module implements view functions for web application.
 """
+import unicodedata
 from . import web
 from .forms import EmbedForm, ExtractForm, CapacityCalculateForm
 from helpers.gc_file_helpers import gc_file_associations
@@ -47,17 +48,18 @@ def embed():
             return render_template('errors/400.html', message='Enter a valid '
                                                               'genetic code.')
         try:
-            msg = form.msg_field.data
-            seq = form.dna_field.data
+            msg = str(form.msg_field.data)
+            seq = str(form.dna_field.data)
             coding_regions = find_coding_region(dna_seq=seq, frame=1,
-                                                gc=form.gc_field.data)
+                                                gc=str(form.gc_field.data))
             cap = find_capacity(dna_seq=seq, frame=1,
-                                gc=form.gc_field.data)
+                                gc=str(form.gc_field.data))
             if (len(msg)*8) > cap:
                 flash('Watermark message length exceeds storage capacity.')
                 return render_template('embed.html', form=form)
             wm_seq = embed_data(dna_seq=seq, frame=1, message=msg,
-                                region=coding_regions, gc=form.gc_field.data)
+                                region=coding_regions,
+                                gc=str(form.gc_field.data))
             # Present results to the user.
             return render_template('result.html',
                                    message='Watermarked DNA:\n'+wm_seq)
@@ -85,11 +87,12 @@ def extract():
                                    message='Enter a valid genetic code.')
         try:
             # extract the data.
-            wm_seq = form.dna_field.data
+            wm_seq = str(form.dna_field.data)
             coding_regions = find_coding_region(dna_seq=wm_seq, frame=1,
-                                                gc=form.gc_field.data)
+                                                gc=str(form.gc_field.data))
             e_msg = extract_data(wm_dna=wm_seq, frame=1,
-                                 region=coding_regions, gc=form.gc_field.data)
+                                 region=coding_regions,
+                                 gc=str(form.gc_field.data))
             # Present results to the user.
             return render_template('result.html',
                                    message='Extracted message:\n'+e_msg)
@@ -117,11 +120,12 @@ def cap_calculate():
                                                               'genetic code.')
         try:
             # calculate capacity for the form.
-            seq = form.dna_field.data
+            seq = str(form.dna_field.data)
             print("sequence field from the form is: "+seq+"\ntype:"+str(type(
                 seq)))
             print("gc field from the form is: " + str(form.gc_field.data))
-            cap = find_capacity(dna_seq=seq, frame=1, gc=form.gc_field.data)
+            cap = find_capacity(dna_seq=seq, frame=1,
+                                gc=str(form.gc_field.data))
             # Present results to the user.
             return render_template('result.html',
                                    message='Capacity: {ltr} alphabets (i.e. '
