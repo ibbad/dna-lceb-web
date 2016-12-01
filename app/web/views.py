@@ -118,7 +118,8 @@ def cap_calculate():
         try:
             # calculate capacity for the form.
             seq = form.dna_field.data
-            print("sequence field from the form is: "+seq+"\ntype:"+type(seq))
+            print("sequence field from the form is: "+seq+"\ntype:"+str(type(
+                seq)))
             print("gc field from the form is: " + str(form.gc_field.data))
             cap = find_capacity(dna_seq=seq, frame=1, gc=form.gc_field.data)
             # Present results to the user.
