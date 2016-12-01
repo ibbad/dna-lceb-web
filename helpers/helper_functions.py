@@ -45,7 +45,7 @@ def dna_from_mat(filename=None, path=None):
     elif filename is not None:
         # Read file from default folder
         data = scipy.io.loadmat('dataset/mat/' + filename)
-        seq_id = filename.split('.')[0] # Expected_filename= filename.mat
+        seq_id = filename.split('.')[0]    # Expected_filename= filename.mat
         try:
             return str(data.get(seq_id)[0])
         except FileNotFoundError:

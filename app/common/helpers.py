@@ -140,7 +140,6 @@ def bin_to_str(bits):
     return ''.join([c for c in ch_str])
 
 
-
 def bin_to_nucleotide(bin_str):
     """
     Convert binary bits to nucleotide
