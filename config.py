@@ -9,6 +9,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or generate_secret_key()
     SSL_DISABLE = False
+    CSRF_ENABLED = False
 
     @staticmethod
     def init_app(app):

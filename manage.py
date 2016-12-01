@@ -32,6 +32,5 @@ def test():
 def deploy():
     """Run deployment tasks."""
 
-
 if __name__ == "__main__":
     manager.run()
