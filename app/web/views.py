@@ -2,7 +2,7 @@
 This module implements view functions for web application.
 """
 from . import web
-from .forms import EmbedForm, ExtractForm
+from .forms import EmbedForm, ExtractForm, CapacityCalculateForm
 from helpers.gc_file_helpers import gc_file_associations
 from flask import flash, redirect, render_template, url_for, abort, request, \
     current_app
@@ -79,4 +79,37 @@ def embed():
         except Exception as e:
             return render_template('error/400.html', message=str(e))
     return render_template('extract.html', form=form)
+
+
+@web.index('/capacity', methods=['GET', 'POST'])
+def cap_calculate():
+    form = CapacityCalculateForm()
+    if form.validate_on_submit():
+        if str(form.gc_field.data) not in gc_file_associations.keys():
+            return render_template('errors/400.html', message='Enter a valid '
+                                                              'genetic code.')
+        try:
+            seq = form.dna_field.data
+            cap = find_capacity(dna_seq=seq, frame=1, )
+            return render_template('result.html',
+                                   message='Capacity: {ltr} alphabets (i.e. '
+                                           '{bits} bits)'.format(
+                                            ltr=int(cap/8), bits=cap))
+        except Exception as e:
+            return render_template('error/400.html', message=str(e))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
