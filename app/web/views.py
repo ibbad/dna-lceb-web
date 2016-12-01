@@ -6,7 +6,7 @@ from .forms import EmbedForm, ExtractForm, CapacityCalculateForm
 from helpers.gc_file_helpers import gc_file_associations
 from flask import flash, redirect, render_template, url_for, abort, request, \
     current_app
-from app.common.helpers import find_coding_region, find_capacity,\
+from app.common.app_helpers import find_coding_region, find_capacity,\
     embed_data, extract_data
 
 
