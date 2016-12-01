@@ -17,9 +17,11 @@ def find_capacity(dna_seq=None, frame=1, gc=1):
     """
     if dna_seq is None or type(dna_seq) is not str:
         # Bad dna_seq value
+        print("find capacity dna_seq is none or type is not str")
         return None
     if frame > 3 or frame < 1:
         # Bad value for frame
+        print("find capacity frame number invalid ")
         return None
     # Read the genetic code table data.
     try:
@@ -67,9 +69,11 @@ def find_capacity_for_coding_region(dna_seq=None, region={}, frame=1, gc=1):
     """
     if dna_seq is None or type(dna_seq) is not str:
         # Bad dna_seq value
+        print("find_capacity_for_coding_region dna_seq is none")
         return None
     if frame > 3 or frame < 1:
         # Bad value for frame
+        print("find_capacity_for_coding_region frame number invalid ")
         return None
     # Read the genetic code table data.
     try:
@@ -303,6 +307,8 @@ def embed_data(dna_seq=None, message=None, frame=1, region={}, gc=1):
     :return: DNA sequence (string) watermarked.
     """
     if dna_seq is None or type(dna_seq) is not str:
+
+        print("embed_data frame number invalid ")
         return None
     # Clean dna sequence.
     dna_seq = _clean_dna(dna_seq)
@@ -377,6 +383,7 @@ def extract_data(wm_dna=None, frame=1, region={}, gc=1):
     :return: DNA sequence (string) watermarked.
     """
     if wm_dna is None or type(wm_dna) is not str:
+        print("extract_data wm_dna is none or type is not str")
         return None
     # Clean dna sequence.
     dna_seq = _clean_dna(wm_dna)
@@ -437,9 +444,11 @@ def find_coding_region(dna_seq=None, frame=1, gc=1):
     # TODO: Take open reading frames into account.
     if dna_seq is None or type(dna_seq) is not str:
         # Bad dna_seq value
+        print("find_coding_region dna_seq is none")
         return None
     if frame > 3 or frame < 1:
         # Invalid frame number
+        print("find_coding_region frame is invalid")
         return None
     # Read the genetic code table data.
     try:
@@ -468,6 +477,6 @@ def find_coding_region(dna_seq=None, frame=1, gc=1):
         if len(stop_index) < len(start_index):
             stop_index.append((len(dna)-len(dna) % 3) + 1)
         return dict(start=start_index, stop=stop_index)
-    except KeyError:
-        # given GC value does not have any associated file.
-        pass
+    except Exception as e:
+        print(e)
+        return None
