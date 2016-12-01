@@ -15,7 +15,7 @@
         Calculate capacity
     </h1>
 </div>
-        {{ form.hidden_tag }}
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
 <div class="col-md-12">
     {{wtf.quick_form(form)}}
 </div>
