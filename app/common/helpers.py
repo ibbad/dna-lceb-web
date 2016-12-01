@@ -385,7 +385,6 @@ def extract_data(wm_dna=None, frame=1, region={}, gc=1):
         return None
     # Clean dna sequence.
     dna_seq = _clean_dna(wm_dna)
-    wm_dna = ""                             # watermarked DNA
     # extract data
     try:
         # Convert data to binary string
