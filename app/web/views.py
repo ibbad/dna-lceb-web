@@ -6,7 +6,7 @@ from .forms import EmbedForm, ExtractForm, CapacityCalculateForm
 from helpers.gc_file_helpers import gc_file_associations
 from flask import flash, redirect, render_template, url_for, abort, request, \
     current_app
-from app.common.app_helpers import find_coding_region, find_capacity,\
+from ..common.app_helpers import find_coding_region, find_capacity,\
     embed_data, extract_data
 
 
@@ -118,7 +118,7 @@ def cap_calculate():
         try:
             # calculate capacity for the form.
             seq = form.dna_field.data
-            cap = find_capacity(dna_seq=seq, frame=1, )
+            cap = find_capacity(dna_seq=seq, frame=1, gc=form.gc_field.data)
             # Present results to the user.
             return render_template('result.html',
                                    message='Capacity: {ltr} alphabets (i.e. '

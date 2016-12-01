@@ -50,12 +50,9 @@ def find_capacity(dna_seq=None, frame=1, gc=1):
                 elif aa["count"] > 1:
                     capacity += 1
         return capacity
-    except KeyError:
-        # given GC value does not have any associated file.
-        pass
-    except ValueError:
-        # count has invalid string value
-        pass
+    except Exception as e:
+        print(e)
+        return None
 
 
 def find_capacity_for_coding_region(dna_seq=None, region={}, frame=1, gc=1):
@@ -97,12 +94,10 @@ def find_capacity_for_coding_region(dna_seq=None, region={}, frame=1, gc=1):
                 elif aa["count"] > 1:
                     capacity += 1
         return capacity
-    except KeyError:
+    except Exception as e:
         # given GC value does not have any associated file.
-        pass
-    except ValueError:
-        # count has invalid string value
-        pass
+        print(e)
+        return None
 
 
 def _clean_dna(dna_seq):
