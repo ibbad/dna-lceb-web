@@ -28,7 +28,7 @@ def server_shutdown():
 @web.route('/', methods=['GET'])
 def index():
     # TODO: redirect to project index page.
-    return redirect(url_for('web.embed'))
+    return render_template('index.html')
 
 
 @web.route('/embed', methods=['GET', 'POST'])
