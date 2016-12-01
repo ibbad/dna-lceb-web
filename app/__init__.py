@@ -2,6 +2,7 @@
 Initialization for application main package.
 """
 from flask import Flask
+from flask_wtf.csrf import CsrfProtect
 from flask_bootstrap import Bootstrap
 from flask_moment import Moment
 from config import config
@@ -9,6 +10,7 @@ from config import config
 # instantiate modules
 bootstrap = Bootstrap()
 moment = Moment()
+csrf = CsrfProtect()
 
 
 def create_app(config_name):
@@ -24,6 +26,7 @@ def create_app(config_name):
     # initialize modules
     bootstrap.init_app(app)
     moment.init_app(app)
+    csrf.init_app(app)
 
     # Register blueprint for web app. and restapi.
     from .web import web as web_blueprint
