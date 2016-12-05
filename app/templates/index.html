@@ -12,10 +12,52 @@
 {% block page_content %}
 <div class="page-header">
     <h1>
-        DNA-LCEB
+        DNA-LCEB Server
     </h1>
 </div>
-<div class="col-md-12">
-    <p>Add project page, description here.</p>
+<div class="content">
+    <h2>Usage Notes</h2>
+    <ol>
+        <li>Capacity Calculation.</li>
+        <ul>
+            <li>Choose a sequence from list or Enter a sequence in the
+                given field.</li>
+            <li>Enter corresponding genetic code (if not known insert 1) for
+                the sequence.</li>
+            <li>In case the sequence is chosen from list, genetic code is
+                automatically retrieved.</li>
+            <li>Submit the form pressing Calculate. If the operation is
+                successful, you will be redirected to a page with
+                stating capacity in number of bits and characters, otherwise
+                error will be displayed.  16 bits out of available capacity
+                are reserved for supplementary data with watermark.</li>
+        </ul>
+        <br>
+        <li>Data embedding.</li>
+        <ul>
+            <li>Choose a sequence from list or Enter a sequence in the
+                given field.</li>
+            <li>Enter corresponding genetic code (if not known insert 1) for
+                the sequence.</li>
+            <li>In case the sequence is chosen from list, genetic code is
+                automatically retrieved.</li>
+            <li>Enter a test message</li>
+            <li>Submit the form pressing Embed. If the operation is
+                successful, you will be redirected to a page with
+                resulting watemarked sequence, or error will be displayed.</li>
+        </ul>
+        <br>
+        <li>Data Extraction.</li>
+        <ul>
+            <li>Insert watermarked sequence in given field.</li>
+            <li>Enter corresponding genetic code (if not known insert 1) for
+                the sequence.</li>
+            <li>Submit the form pressing Extract. If the operation is
+                successful, you will be redirected to a page with
+                extracted watermark message, otherwise error will be
+                displayed.</li>
+        </ul>
+    </ol>
 </div>
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
 {% endblock %}

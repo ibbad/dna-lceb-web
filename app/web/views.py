@@ -147,9 +147,7 @@ def cap_calculate():
             else:
                 flash("Please choose or enter some DNA sequence")
                 return render_template('embed.html', form=form)
-                # calculate capacity for the form.
-                seq = str(form.dna_field.data)
-                gc = str(form.gc_field.data)
+            # calculate capacity for the form.
             cap = find_capacity(dna_seq=seq, frame=1, gc=gc)
             # Present results to the user.
             return render_template(
