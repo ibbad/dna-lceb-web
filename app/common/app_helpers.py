@@ -194,7 +194,6 @@ def _lsb_4fold(aa, bits):
     elif bits == '11':
         return codon[:2]+'t'
     else:
-        print(aa, bits)
         return None
 
 
@@ -241,7 +240,6 @@ def _extract_lsb_4fold(codon):
     elif codon[-1] == 't':
         return '11'
     else:
-        print(codon)
         return None
 
 
@@ -278,7 +276,6 @@ def _int_to_bin_str(value):
         bits = bin(value)[2:]
         return ('0'*16)[len(bits):] + bits
     else:
-        print("None in int2binstr")
         None
 
 
@@ -308,7 +305,6 @@ def embed_data(dna_seq=None, message=None, frame=1, region={}, gc=1):
     :return: DNA sequence (string) watermarked.
     """
     if dna_seq is None or type(dna_seq) is not str:
-        print("embed_data frame number invalid ")
         return None
     # Clean dna sequence.
     dna_seq = _clean_dna(dna_seq)
@@ -367,7 +363,6 @@ def embed_data(dna_seq=None, message=None, frame=1, region={}, gc=1):
             wm_dna += dna_seq[len(wm_dna):]
         return wm_dna.lower()
     except ValueError as e:
-        print(e)
         return None
 
 
@@ -383,7 +378,6 @@ def extract_data(wm_dna=None, frame=1, region={}, gc=1):
     :return: DNA sequence (string) watermarked.
     """
     if wm_dna is None or type(wm_dna) is not str:
-        print("extract_data wm_dna is none or type is not str")
         return None
     # Clean dna sequence.
     dna_seq = _clean_dna(wm_dna)
@@ -427,7 +421,6 @@ def extract_data(wm_dna=None, frame=1, region={}, gc=1):
         # convert and return the watermark data
         return bin_to_str(wm_msg[16:(16+wm_len*8)])
     except Exception as e:
-        print(e)
         return None
 
 
@@ -444,11 +437,9 @@ def find_coding_region(dna_seq=None, frame=1, gc=1):
     # TODO: Take open reading frames into account.
     if dna_seq is None or type(dna_seq) is not str:
         # Bad dna_seq value
-        print("find_coding_region dna_seq is none")
         return None
     if frame > 3 or frame < 1:
         # Invalid frame number
-        print("find_coding_region frame is invalid")
         return None
     # Read the genetic code table data.
     try:
@@ -478,5 +469,4 @@ def find_coding_region(dna_seq=None, frame=1, gc=1):
             stop_index.append((len(dna)-len(dna) % 3) + 1)
         return dict(start=start_index, stop=stop_index)
     except Exception as e:
-        print(e)
         return None

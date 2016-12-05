@@ -37,11 +37,9 @@ def dna_from_mat(filename=None, file_path=None):
         except TypeError:
             # Invalid file name extracted from data
             raise TypeError
-            return None
         except FileNotFoundError:
             # File not found in default folder
             raise FileNotFoundError
-            return None
     elif filename is not None:
         # Read file from default folder
         data = scipy.io.loadmat('dataset/mat/' + filename)
@@ -54,7 +52,6 @@ def dna_from_mat(filename=None, file_path=None):
             return None
     else:
         # Invalid parameters provided.
-        print("Invalid parameters")
         return None
 
 
@@ -77,10 +74,7 @@ def dna_from_json(filename=None, file_path=None):
             # Invalid file name extracted from data
             return TypeError
         except FileNotFoundError as e:
-            print(file_path)
-            print(filename)
             # File not found in default folder
-            print(e)
             # File does not exist on the path
             raise FileNotFoundError
     elif filename is not None:
@@ -91,13 +85,9 @@ def dna_from_json(filename=None, file_path=None):
             return data
         except TypeError as e:
             # Invalid file name extracted from data
-            print(e)
             raise TypeError
         except FileNotFoundError as e:
-            print(file_path)
-            print(filename)
             # File not found in default folder
-            print(e)
             raise FileNotFoundError
     else:
         # Invalid parameters provided.
@@ -199,7 +189,6 @@ def get_chosen_file_path(file_path='dataset/json/directory.json', key=None):
     :return: path to the file (relative to app directory tree.)
     """
     try:
-        print(file_path)
         with open(file_path) as data_file:
             data = json.load(data_file)
         return data.get(key)['filePath']
@@ -219,7 +208,6 @@ def get_chosen_file_name(file_path='dataset/json/directory.json', key=None):
     :return: path to the file (relative to app directory tree.)
     """
     try:
-        print(file_path)
         with open(file_path) as data_file:
             data = json.load(data_file)
         return data.get(key)['fileName']

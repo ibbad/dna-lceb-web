@@ -54,7 +54,7 @@ def embed():
             # Check if choices are valid
             if form.dna_choice_field.data != '#':
                 # load sequence
-                gc = form.dna_choice_field.data
+                gc = str(form.gc_field.data)
                 seq = dna_from_json(file_path=get_chosen_file_path(
                     key=form.dna_choice_field.data))['dna']
                 if form.msg_field.data is None or form.msg_field.data == '':
@@ -62,19 +62,21 @@ def embed():
                     return render_template('embed.html', form=form)
                 else:
                     msg = str(form.msg_field.data)
-            else:
+                print('here0')
+            elif form.dna_field.data != '':
                 msg = str(form.msg_field.data)
                 seq = str(form.dna_field.data)
                 gc = str(form.gc_field.data)
-            coding_regions = find_coding_region(dna_seq=seq, frame=1,gc=gc)
-            cap = find_capacity(dna_seq=seq, frame=1,
-                                gc=str(form.gc_field.data))
-            if (len(msg)*8) > cap:
+            else:
+                flash("Please choose or enter some DNA sequence")
+                return render_template('embed.html', form=form)
+            coding_regions = find_coding_region(dna_seq=seq, frame=1, gc=gc)
+            cap = find_capacity(dna_seq=seq, frame=1, gc=gc)
+            if (len(msg)*8)+2 > cap:
                 flash('Watermark message length exceeds storage capacity.')
                 return render_template('embed.html', form=form)
             wm_seq = embed_data(dna_seq=seq, frame=1, message=msg,
-                                region=coding_regions,
-                                gc=str(form.gc_field.data))
+                                region=coding_regions, gc=gc)
             # Present results to the user.
             return render_template('result.html',
                                    message='Watermarked DNA:\n'+wm_seq)
@@ -139,17 +141,21 @@ def cap_calculate():
                 seq = dna_from_json(file_path=get_chosen_file_path(
                     key=form.dna_choice_field.data))['dna']
                 gc = str(form.gc_field.data)
+            elif form.dna_field.data != '':
+                seq = str(form.dna_field.data)
+                gc = str(form.gc_field.data)
             else:
+                flash("Please choose or enter some DNA sequence")
+                return render_template('embed.html', form=form)
                 # calculate capacity for the form.
                 seq = str(form.dna_field.data)
                 gc = str(form.gc_field.data)
             cap = find_capacity(dna_seq=seq, frame=1, gc=gc)
             # Present results to the user.
-            return render_template('result.html',
-                                   message='Capacity: {ltr} alphabets (i.e. '
-                                           '{bits} bits)'.format(
-                                            ltr=int(cap/8),
-                                            bits=cap))
+            return render_template(
+                'result.html',
+                message='Capacity: {ltr} alphabets (i.e. {bits} bits)'.format(
+                                            ltr=int(cap/8), bits=cap))
         except FileNotFoundError:
             return render_template('errors/400.html',
                                    message='Requested file not found in db.')
