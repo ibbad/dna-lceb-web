@@ -8,7 +8,8 @@ from helpers.gc_file_helpers import gc_file_associations
 from flask import flash, redirect, render_template, url_for, abort, request, \
     current_app
 from ..common.app_helpers import find_coding_region, find_capacity,\
-    embed_data, extract_data
+    embed_data, extract_data, load_sequence_choices
+from helpers.helper_functions import dna_from_json
 
 
 @web.route('/shutdown')
@@ -41,6 +42,7 @@ def embed():
     :return:
     """
     form = EmbedForm(gc_field=1)
+    form.dna_choice_field.choices = [('Select', 0) + load_sequence_choices()]
 
     if form.validate_on_submit():
         # check submitted form
@@ -48,10 +50,21 @@ def embed():
             return render_template('errors/400.html', message='Enter a valid '
                                                               'genetic code.')
         try:
-            msg = str(form.msg_field.data)
-            seq = str(form.dna_field.data)
-            coding_regions = find_coding_region(dna_seq=seq, frame=1,
-                                                gc=str(form.gc_field.data))
+            # Check if choices are valid
+            if form.dna_choice_field.data != 'Select':
+                # load sequence
+                gc = form.dna_choice_field.data
+                seq = dna_from_json(filename=form.dna_choice_field.name)
+                if form.msg_field.data is None or form.msg_field.data == '':
+                    flash('Please add a watermark message')
+                    return render_template('embed.html', form=form)
+                else:
+                    msg = str(form.msg_field.data)
+            else:
+                msg = str(form.msg_field.data)
+                seq = str(form.dna_field.data)
+                gc = str(form.gc_field.data)
+            coding_regions = find_coding_region(dna_seq=seq, frame=1,gc=gc)
             cap = find_capacity(dna_seq=seq, frame=1,
                                 gc=str(form.gc_field.data))
             if (len(msg)*8) > cap:

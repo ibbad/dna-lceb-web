@@ -172,34 +172,3 @@ def get_synonymous_codons_gct(gct=None, codon=None):
         return None
     except Exception:
         return None
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
