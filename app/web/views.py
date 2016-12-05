@@ -8,8 +8,9 @@ from helpers.gc_file_helpers import gc_file_associations
 from flask import flash, redirect, render_template, url_for, abort, request, \
     current_app
 from ..common.app_helpers import find_coding_region, find_capacity,\
-    embed_data, extract_data, load_sequence_choices
-from helpers.helper_functions import dna_from_json
+    embed_data, extract_data
+from helpers.helper_functions import dna_from_json, load_sequence_choices, \
+    get_chosen_file_path
 
 
 @web.route('/shutdown')
@@ -42,7 +43,7 @@ def embed():
     :return:
     """
     form = EmbedForm(gc_field=1)
-    form.dna_choice_field.choices = [('Select', 0) + load_sequence_choices()]
+    form.dna_choice_field.choices = [('#', 'Select')] + load_sequence_choices()
 
     if form.validate_on_submit():
         # check submitted form
@@ -51,10 +52,11 @@ def embed():
                                                               'genetic code.')
         try:
             # Check if choices are valid
-            if form.dna_choice_field.data != 'Select':
+            if form.dna_choice_field.data != '#':
                 # load sequence
                 gc = form.dna_choice_field.data
-                seq = dna_from_json(filename=form.dna_choice_field.name)
+                seq = dna_from_json(file_path=get_chosen_file_path(
+                    key=form.dna_choice_field.data))['dna']
                 if form.msg_field.data is None or form.msg_field.data == '':
                     flash('Please add a watermark message')
                     return render_template('embed.html', form=form)
@@ -125,25 +127,32 @@ def cap_calculate():
     :return:
     """
     form = CapacityCalculateForm(gc_field=1)
+    form.dna_choice_field.choices = [('#', 'Select')] + load_sequence_choices()
     if form.validate_on_submit():
         # Check submitted form
         if str(form.gc_field.data) not in gc_file_associations.keys():
             # Make sure that valid genetic code is entered
-            return render_template('errors/400.html', message='Enter a valid '
-                                                              'genetic code.')
+            return render_template('errors/400.html',
+                                   message='Enter a valid genetic code.')
         try:
-            # calculate capacity for the form.
-            seq = str(form.dna_field.data)
-            print("sequence field from the form is: "+seq+"\ntype:"+str(type(
-                seq)))
-            print("gc field from the form is: " + str(form.gc_field.data))
-            cap = find_capacity(dna_seq=seq, frame=1,
-                                gc=str(form.gc_field.data))
+            if form.dna_choice_field.data != '#':
+                seq = dna_from_json(file_path=get_chosen_file_path(
+                    key=form.dna_choice_field.data))['dna']
+                gc = str(form.gc_field.data)
+            else:
+                # calculate capacity for the form.
+                seq = str(form.dna_field.data)
+                gc = str(form.gc_field.data)
+            cap = find_capacity(dna_seq=seq, frame=1, gc=gc)
             # Present results to the user.
             return render_template('result.html',
                                    message='Capacity: {ltr} alphabets (i.e. '
                                            '{bits} bits)'.format(
-                                            ltr=int(cap/8), bits=cap))
+                                            ltr=int(cap/8),
+                                            bits=cap))
+        except FileNotFoundError:
+            return render_template('errors/400.html',
+                                   message='Requested file not found in db.')
         except Exception as e:
             return render_template('errors/400.html', message=str(e))
     # on GET request, present the form.

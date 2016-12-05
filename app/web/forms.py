@@ -4,7 +4,7 @@ This module contains the declarations for the Forms used in web application.
 from flask_wtf import FlaskForm
 from wtforms import SubmitField, StringField, IntegerField, SelectField
 from wtforms.validators import number_range, input_required
-from ..common.app_helpers import load_sequence_choices
+from helpers.helper_functions import load_sequence_choices
 
 
 class EmbedForm(FlaskForm):
@@ -12,8 +12,9 @@ class EmbedForm(FlaskForm):
     Form for extraction of insertion of watermark in DNA sequence
     """
     dna_choice_field = SelectField(
-        'Choose a sequence', choices=[('Select', 0)] + load_sequence_choices())
-    dna_field = StringField('DNA string', validators=[input_required()])
+        'Choose a sequence',
+        choices=[('#', 'Select')] + load_sequence_choices())
+    dna_field = StringField('DNA string', validators=[])
     gc_field = IntegerField('Genetic code', validators=[input_required(),
                                                         number_range(1, 42)])
     msg_field = StringField('Enter message', validators=[input_required()])
@@ -35,8 +36,9 @@ class CapacityCalculateForm(FlaskForm):
     Form for calculating capacity for given DNA sequence
     """
     dna_choice_field = SelectField(
-        'Choose a sequence', choices=[('Select', 0)] + load_sequence_choices())
-    dna_field = StringField('DNA Sequence', validators=[input_required()])
+        'Choose a sequence',
+        choices=[('#', 'Select')] + load_sequence_choices())
+    dna_field = StringField('DNA Sequence', validators=[])
     gc_field = IntegerField('Genetic code', validators=[input_required(),
                                                         number_range(1, 42)])
 

@@ -308,7 +308,6 @@ def embed_data(dna_seq=None, message=None, frame=1, region={}, gc=1):
     :return: DNA sequence (string) watermarked.
     """
     if dna_seq is None or type(dna_seq) is not str:
-
         print("embed_data frame number invalid ")
         return None
     # Clean dna sequence.
@@ -481,78 +480,3 @@ def find_coding_region(dna_seq=None, frame=1, gc=1):
     except Exception as e:
         print(e)
         return None
-
-
-def get_filenames_from_directory(directory='dataset/json'):
-    """
-    This function reads name of all test sequences in dataset/json category
-    and returns in form of a list.
-    :param directory: path to directory from where the files must be read.
-    :return:
-    """
-    from os import walk
-    files = []
-    for (dirpath, dirnames, filenames) in walk(directory):
-        files.extend(filenames)
-        break
-    return files
-
-
-def load_sequence_choices(file_path='dataset/json/directory.json'):
-    """
-    This function returns the directory file and loads the filenames and
-    associated json codes into a list of tuples.
-    :param file_path: path of directory file
-    :return:
-    """
-    try:
-        data = dict()
-
-        with open(file_path) as directory_file:
-            data = json.loads(directory_file)
-        choices = []
-        for key in data:
-            choices.extend((key, data.get(key)))
-
-    except FileNotFoundError:
-        return []
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

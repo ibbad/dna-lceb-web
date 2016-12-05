@@ -1,10 +1,27 @@
-/**
- * Created by hafeez on 5.12.2016.
- */
 {
-  "apis_mallifera": 1,
-  "blepharisma": 1,
-  "candia_albins": 1,
-  "savingnyi": 1,
-  "ypt7": 1
+  "apis": {
+    "name": "Apis Mallifera",
+    "fileName": "apis_mallifera.json",
+    "filePath": "dataset/json/apis_mallifera.json"
+  },
+  "blep": {
+    "name": "blepharisma",
+    "fileName": "blepharisma.json",
+    "filePath": "dataset/json/blepharisma.json"
+  },
+  "cand":{
+    "name": "Candia Ablins",
+    "fileName": "candia_ablins.json",
+    "filePath": "dataset/json/candia_ablins.json"
+  },
+  "savi": {
+    "name": "Savingnyi",
+    "fileName": "savignyi.json",
+    "filePath": "dataset/json/savignyi.json"
+  },
+  "ypt7": {
+    "name": "YPT7",
+    "fileName": "ypt7.json",
+    "filePath": "dataset/json/ypt7.json"
+  }
 }

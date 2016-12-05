@@ -20,7 +20,7 @@ def generate_secret_key(length=32):
                    for _ in range(length))
 
 
-def dna_from_mat(filename=None, path=None):
+def dna_from_mat(filename=None, file_path=None):
     """
     This function loads the DNA sequence from a .mat file. if both filename
     and path are provided for file, then path is preferred.
@@ -29,9 +29,9 @@ def dna_from_mat(filename=None, path=None):
     :param path: fully qualified path e.g. /folder/subfolder/filename.mat
     :return: string object containing DNA String.
     """
-    if path is not None:
-        data = scipy.io.loadmat(path)
-        filename = path.split('/')[-1].split('.')[0]
+    if file_path is not None:
+        data = scipy.io.loadmat(file_path)
+        filename = file_path.split('/')[-1].split('.')[0]
         try:
             return str(data.get(filename)[0])
         except TypeError:
@@ -58,7 +58,7 @@ def dna_from_mat(filename=None, path=None):
         return None
 
 
-def dna_from_json(filename=None, path=None):
+def dna_from_json(filename=None, file_path=None):
     """
     This function loads the DNA sequence from a .json file. if both filename
     and path are provided for file, then path is preferred.
@@ -68,15 +68,19 @@ def dna_from_json(filename=None, path=None):
     :return: dictionary object containing the string.
     :except TypeError:
     """
-    if path is not None:
+    if file_path is not None:
         try:
-            with open(path) as dna_file:
+            with open(file_path) as dna_file:
                 data = json.load(dna_file)
             return data
         except TypeError:
             # Invalid file name extracted from data
             return TypeError
-        except FileNotFoundError:
+        except FileNotFoundError as e:
+            print(file_path)
+            print(filename)
+            # File not found in default folder
+            print(e)
             # File does not exist on the path
             raise FileNotFoundError
     elif filename is not None:
@@ -85,11 +89,15 @@ def dna_from_json(filename=None, path=None):
             with open('dataset/json/' + filename) as dna_file:
                 data = json.load(dna_file)
             return data
-        except TypeError:
+        except TypeError as e:
             # Invalid file name extracted from data
+            print(e)
             raise TypeError
-        except FileNotFoundError:
+        except FileNotFoundError as e:
+            print(file_path)
+            print(filename)
             # File not found in default folder
+            print(e)
             raise FileNotFoundError
     else:
         # Invalid parameters provided.
@@ -146,3 +154,78 @@ def bits2str(bits):
         byte = bits[b * 8:(b + 1) * 8]
         chars.append(chr(int(''.join([str(bit) for bit in byte]), 2)))
     return ''.join(chars)
+
+
+def get_filenames_from_directory(directory='dataset/json'):
+    """
+    This function reads name of all test sequences in dataset/json category
+    and returns in form of a list.
+    :param directory: path to directory from where the files must be read.
+    :return:
+    """
+    from os import walk
+    files = []
+    for (dirpath, dirnames, filenames) in walk(directory):
+        files.extend(filenames)
+        break
+    return files
+
+
+def load_sequence_choices(file_path='dataset/json/directory.json'):
+    """
+    This function returns the directory file and loads the filenames and
+    associated json codes into a list of tuples.
+    :param file_path: path of directory file
+    :return:
+    """
+    try:
+        with open(file_path) as directory_file:
+            data = json.load(directory_file)
+        choices = []
+        for key in data:
+            choices.append((key, data.get(key)['name']))
+        return choices
+    except FileNotFoundError:
+        return []
+
+
+def get_chosen_file_path(file_path='dataset/json/directory.json', key=None):
+    """
+    This function returns the name of file which is selected from list of
+    default methods.
+    :param file_path: path to file from where the filename should be read
+    against a given key.
+    :param key: key for which the data must be read.
+    :return: path to the file (relative to app directory tree.)
+    """
+    try:
+        print(file_path)
+        with open(file_path) as data_file:
+            data = json.load(data_file)
+        return data.get(key)['filePath']
+    except FileNotFoundError:
+        return None
+    except Exception:
+        return None
+
+
+def get_chosen_file_name(file_path='dataset/json/directory.json', key=None):
+    """
+    This function returns the name of file which is selected from list of
+    default methods.
+    :param file_path: path to file from where the filename should be read
+    against a given key.
+    :param key: key for which the data must be read.
+    :return: path to the file (relative to app directory tree.)
+    """
+    try:
+        print(file_path)
+        with open(file_path) as data_file:
+            data = json.load(data_file)
+        return data.get(key)['fileName']
+    except FileNotFoundError:
+        return None
+    except Exception:
+        return None
+
+
