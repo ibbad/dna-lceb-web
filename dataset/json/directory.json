@@ -23,5 +23,30 @@
     "name": "YPT7",
     "fileName": "ypt7.json",
     "filePath": "dataset/json/ypt7.json"
+  },
+  "bacillus": {
+    "name": "Bacillus Sibtilis",
+    "fileName": "bacillus.json",
+    "filePath": "dataset/json/bacillus.json"
+  },
+  "e_coli": {
+    "name": "Eschericha coli",
+    "fileName": "e_coli.json",
+    "filePath": "dataset/json/e_coli.json"
+  },
+  "emericella": {
+    "name": "Emericella Nidulans",
+    "fileName": "emericella.json",
+    "filePath": "dataset/json/emericella.json"
+  },
+  "euplotes": {
+    "name": "Euplotes Octocarinates",
+    "fileName": "euplotes.json",
+    "filePath": "dataset/json/euplotes.json"
+  },
+  "mycoplasma": {
+    "name": "Mycoplasma",
+    "fileName": "mycoplasma.json",
+    "filePath": "dataset/json/mycoplasma.json"
   }
 }
